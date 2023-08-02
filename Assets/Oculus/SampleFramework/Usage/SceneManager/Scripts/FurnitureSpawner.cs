@@ -7,6 +7,7 @@ public class FurnitureSpawner : MonoBehaviour
 {
     [Tooltip("Add a point at ceiling.")]
     public GameObject RoomLightPrefab;
+
     public List<Spawnable> SpawnablePrefabs;
 
     private OVRSceneAnchor _sceneAnchor;
@@ -21,9 +22,6 @@ public class FurnitureSpawner : MonoBehaviour
         _classification = GetComponent<OVRSemanticClassification>();
         AddRoomLight();
         SpawnSpawnable();
-
-        if(_classification.Contains(OVRSceneManager.Classification.Desk))
-            transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z * -1);
     }
 
     private void SpawnSpawnable()
@@ -50,7 +48,7 @@ public class FurnitureSpawner : MonoBehaviour
             dimensions.z = 1;
 
             // Special case 01: Has only top plane
-            if (_classification.Contains(OVRSceneManager.Classification.Desk) ||
+            if (_classification.Contains(OVRSceneManager.Classification.Table) ||
                 _classification.Contains(OVRSceneManager.Classification.Couch))
             {
                 GetVolumeFromTopPlane(
@@ -126,6 +124,5 @@ public class FurnitureSpawner : MonoBehaviour
         position = plane.position - Vector3.up * halfHeight;
         rotation = Quaternion.LookRotation(-plane.up, Vector3.up);
         localScale = new Vector3(dimensions.x, halfHeight * 2.0f, dimensions.y);
-        //position = new Vector3(position.x, position.y - 1, position.z);
     }
 }
